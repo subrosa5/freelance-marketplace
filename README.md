@@ -2,7 +2,7 @@
 
 A full-stack freelance marketplace built to production standards. Clients hire freelancers, pay via Stripe escrow, communicate in real time, and release funds only when satisfied.
 
-**Live:** https://freelance-marketplace-nine-khaki.vercel.app
+**Live:** https://freelance-marketplace-sigma.vercel.app
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
