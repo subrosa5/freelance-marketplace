@@ -35,3 +35,5 @@ jobs:
           STRIPE_SECRET_KEY: sk_test_dummy
           UPSTASH_REDIS_REST_URL: https://dummy.upstash.io
           UPSTASH_REDIS_REST_TOKEN: dummy
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost/db?schema=public
+          DIRECT_URL: postgresql://placeholder:placeholder@localhost/db?schema=public

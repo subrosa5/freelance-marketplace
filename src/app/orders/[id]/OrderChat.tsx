@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { pusherClient } from "@/lib/pusher";
+import { pusherClient } from "@/lib/pusher-client";
 import { Send } from "lucide-react";
 
 type Message = {

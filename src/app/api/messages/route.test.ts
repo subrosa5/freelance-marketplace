@@ -13,7 +13,7 @@ vi.mock("@/lib/auth", () => ({ getCurrentUser: vi.fn() }));
 vi.mock("@/lib/redis", () => ({
   rateLimit: vi.fn().mockResolvedValue({ allowed: true, remaining: 29 }),
 }));
-vi.mock("@/lib/pusher", () => ({ pusherServer: { trigger: vi.fn() } }));
+vi.mock("@/lib/pusher-server", () => ({ pusherServer: { trigger: vi.fn() } }));
 vi.mock("@/lib/email", () => ({ sendMessageNotificationEmail: vi.fn().mockResolvedValue(undefined) }));
 
 import { prisma } from "@/lib/prisma";

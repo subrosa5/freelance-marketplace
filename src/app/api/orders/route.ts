@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 import { sendOrderCreatedEmail } from "@/lib/email";
-import { pusherServer } from "@/lib/pusher";
+import { pusherServer } from "@/lib/pusher-server";
 
 const createSchema = z.object({
   gigId: z.string(),

@@ -14,7 +14,7 @@ vi.mock("@/lib/stripe", () => ({
   stripe: { paymentIntents: { create: vi.fn().mockResolvedValue({ id: "pi_1", client_secret: "secret" }) } },
   calculateFee: vi.fn(),
 }));
-vi.mock("@/lib/pusher", () => ({ pusherServer: { trigger: vi.fn() } }));
+vi.mock("@/lib/pusher-server", () => ({ pusherServer: { trigger: vi.fn() } }));
 vi.mock("@/lib/email", () => ({ sendOrderCreatedEmail: vi.fn().mockResolvedValue(undefined) }));
 
 import { prisma } from "@/lib/prisma";

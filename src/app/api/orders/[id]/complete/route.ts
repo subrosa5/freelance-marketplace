@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stripe, calculateFee } from "@/lib/stripe";
-import { pusherServer } from "@/lib/pusher";
+import { pusherServer } from "@/lib/pusher-server";
 import { sendOrderCompletedEmail } from "@/lib/email";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
