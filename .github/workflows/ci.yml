@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          JWT_SECRET: test-secret-for-ci
+          NEXT_PUBLIC_PUSHER_KEY: test
+          NEXT_PUBLIC_PUSHER_CLUSTER: eu
+          PUSHER_APP_ID: test
+          PUSHER_SECRET: test
+          STRIPE_SECRET_KEY: sk_test_dummy
+          UPSTASH_REDIS_REST_URL: https://dummy.upstash.io
+          UPSTASH_REDIS_REST_TOKEN: dummy

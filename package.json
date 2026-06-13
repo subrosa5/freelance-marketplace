@@ -4,23 +4,56 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "@stripe/stripe-js": "^9.8.0",
+    "@uploadthing/react": "^7.3.3",
+    "@upstash/redis": "^1.38.0",
+    "bcryptjs": "^3.0.3",
+    "framer-motion": "^12.40.0",
+    "jose": "^6.2.3",
+    "lucide-react": "^1.18.0",
     "next": "16.2.9",
+    "prisma": "^7.8.0",
+    "pusher": "^5.3.4",
+    "pusher-js": "^8.5.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "resend": "^6.12.4",
+    "stripe": "^22.2.1",
+    "uploadthing": "^7.7.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "jsdom": "^29.1.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
+  },
+  "allowScripts": {
+    "@prisma/client@7.8.0": true,
+    "@prisma/engines@7.8.0": true,
+    "msgpackr-extract@3.0.4": true,
+    "prisma@7.8.0": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.12.2": true
   }
 }

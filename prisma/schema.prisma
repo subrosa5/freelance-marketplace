@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CLIENT
+  FREELANCER
+  ADMIN
+}
+
+enum OrderStatus {
+  OPEN
+  IN_PROGRESS
+  DELIVERED
+  COMPLETED
+  DISPUTED
+  REFUNDED
+  CANCELLED
+}
+
+enum Category {
+  DESIGN
+  DEVELOPMENT
+  WRITING
+  MARKETING
+  VIDEO
+  MUSIC
+  BUSINESS
+  OTHER
+}
+
+model User {
+  id              String   @id @default(cuid())
+  name            String
+  email           String   @unique
+  password        String
+  role            Role     @default(CLIENT)
+  avatar          String?
+  bio             String?
+  skills          String[]
+  rating          Float    @default(0)
+  reviewCount     Int      @default(0)
+  stripeAccountId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  gigs               Gig[]
+  ordersAsClient     Order[]        @relation("ClientOrders")
+  ordersAsFreelancer Order[]        @relation("FreelancerOrders")
+  reviewsGiven       Review[]       @relation("ReviewsGiven")
+  reviewsReceived    Review[]       @relation("ReviewsReceived")
+  messages           Message[]
+  notifications      Notification[]
+
+  @@map("users")
+}
+
+model Gig {
+  id           String   @id @default(cuid())
+  freelancerId String
+  title        String
+  description  String   @db.Text
+  category     Category
+  price        Int
+  deliveryDays Int
+  images       String[]
+  tags         String[]
+  isPublished  Boolean  @default(true)
+  orderCount   Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  freelancer User     @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  orders     Order[]
+  reviews    Review[]
+
+  @@map("gigs")
+}
+
+model Order {
+  id                    String      @id @default(cuid())
+  gigId                 String
+  clientId              String
+  freelancerId          String
+  status                OrderStatus @default(OPEN)
+  price                 Int
+  deliveryDays          Int
+  requirements          String      @db.Text
+  deliverableNote       String?
+  stripePaymentIntentId String?     @unique
+  stripeTransferId      String?
+  dueAt                 DateTime
+  completedAt           DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  gig        Gig         @relation(fields: [gigId], references: [id])
+  client     User        @relation("ClientOrders", fields: [clientId], references: [id])
+  freelancer User        @relation("FreelancerOrders", fields: [freelancerId], references: [id])
+  messages   Message[]
+  review     Review?
+  files      OrderFile[]
+
+  @@map("orders")
+}
+
+model OrderFile {
+  id         String   @id @default(cuid())
+  orderId    String
+  name       String
+  url        String
+  size       Int
+  uploadedAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_files")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  orderId   String
+  senderId  String
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  sender User  @relation(fields: [senderId], references: [id])
+
+  @@map("messages")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  gigId     String
+  authorId  String
+  targetId  String
+  rating    Int
+  comment   String   @db.Text
+  createdAt DateTime @default(now())
+
+  order  Order @relation(fields: [orderId], references: [id])
+  gig    Gig   @relation(fields: [gigId], references: [id])
+  author User  @relation("ReviewsGiven", fields: [authorId], references: [id])
+  target User  @relation("ReviewsReceived", fields: [targetId], references: [id])
+
+  @@map("reviews")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
