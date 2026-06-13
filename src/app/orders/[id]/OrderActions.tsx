@@ -45,15 +45,22 @@ export default function OrderActions({ orderId, status, isClient, isFreelancer, 
     router.refresh();
   }
 
-  return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-5 space-y-4">
-      <h3 className="font-semibold text-gray-900 text-sm">Order Actions</h3>
+  const btnPrimary = "w-full py-3 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 disabled:opacity-40 flex items-center justify-center gap-2";
 
-      {/* Freelancer: start work */}
+  return (
+    <div className="bg-[#0d0d0d] border border-neutral-900 p-5 space-y-4">
+      <div className="flex items-center gap-3 mb-2">
+        <span className="w-4 h-px bg-red-600" />
+        <h3 className="text-[10px] text-neutral-600 uppercase tracking-[0.3em]">Actions</h3>
+      </div>
+
+      {/* Freelancer: start */}
       {isFreelancer && status === "OPEN" && (
-        <button onClick={() => action("deliver")}
-          className="w-full bg-yellow-500 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-yellow-600 disabled:opacity-50 transition-colors"
-          disabled={loading}>
+        <button
+          onClick={() => action("deliver")}
+          className={`${btnPrimary} bg-yellow-600 text-white hover:bg-yellow-500`}
+          disabled={loading}
+        >
           Start Working
         </button>
       )}
@@ -66,19 +73,23 @@ export default function OrderActions({ orderId, status, isClient, isFreelancer, 
             onClientUploadComplete={(res) => {
               setUploadedFiles(res.map(f => ({ name: f.name, url: f.ufsUrl, size: f.size })));
             }}
-            className="ut-button:bg-indigo-600 ut-button:hover:bg-indigo-700 ut-button:text-sm ut-button:font-medium"
+            className="ut-button:bg-neutral-800 ut-button:hover:bg-neutral-700 ut-button:text-xs ut-button:font-medium ut-button:tracking-widest ut-button:uppercase ut-button:text-white"
           />
           {uploadedFiles.length > 0 && (
-            <p className="text-xs text-green-600 flex items-center gap-1">
+            <p className="text-[10px] text-red-500 flex items-center gap-1.5 tracking-widest uppercase">
               <Upload className="w-3 h-3" /> {uploadedFiles.length} file(s) ready
             </p>
           )}
-          <textarea value={note} onChange={e => setNote(e.target.value)} rows={3}
+          <textarea
+            value={note} onChange={e => setNote(e.target.value)} rows={3}
             placeholder="Add a note about your delivery..."
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" />
-          <button onClick={() => action("deliver", { note, fileUrls: uploadedFiles })}
+            className="w-full bg-[#080808] border border-neutral-800 text-neutral-400 text-xs px-4 py-3 focus:outline-none focus:border-red-600 transition-colors duration-200 resize-none placeholder-neutral-800"
+          />
+          <button
+            onClick={() => action("deliver", { note, fileUrls: uploadedFiles })}
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors">
+            className={`${btnPrimary} bg-red-600 text-white hover:bg-red-500`}
+          >
             Submit Delivery
           </button>
         </div>
@@ -87,40 +98,52 @@ export default function OrderActions({ orderId, status, isClient, isFreelancer, 
       {/* Client: accept or dispute */}
       {isClient && status === "DELIVERED" && (
         <div className="space-y-2">
-          <button onClick={() => action("complete")} disabled={loading}
-            className="w-full bg-green-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-green-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
-            <CheckCircle className="w-4 h-4" /> Accept & Release Payment
+          <button
+            onClick={() => action("complete")} disabled={loading}
+            className={`${btnPrimary} bg-red-600 text-white hover:bg-red-500`}
+          >
+            <CheckCircle className="w-3.5 h-3.5" /> Accept & Release Payment
           </button>
-          <button onClick={() => action("dispute")} disabled={loading}
-            className="w-full bg-white border border-red-200 text-red-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-50 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
-            <AlertTriangle className="w-4 h-4" /> Open Dispute
+          <button
+            onClick={() => action("dispute")} disabled={loading}
+            className={`${btnPrimary} border border-neutral-800 text-neutral-500 hover:border-red-900 hover:text-red-600`}
+          >
+            <AlertTriangle className="w-3.5 h-3.5" /> Open Dispute
           </button>
         </div>
       )}
 
-      {/* Client: leave review */}
+      {/* Client: review */}
       {isClient && status === "COMPLETED" && !hasReview && (
         <>
           {!showReview ? (
-            <button onClick={() => setShowReview(true)}
-              className="w-full bg-amber-500 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
-              <Star className="w-4 h-4" /> Leave a Review
+            <button
+              onClick={() => setShowReview(true)}
+              className={`${btnPrimary} border border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-white`}
+            >
+              <Star className="w-3.5 h-3.5" /> Leave a Review
             </button>
           ) : (
             <div className="space-y-3">
               <div className="flex gap-1">
                 {[1,2,3,4,5].map(n => (
-                  <button key={n} onClick={() => setRating(n)}
-                    className={`text-2xl transition-transform hover:scale-110 ${n <= rating ? "text-amber-400" : "text-gray-200"}`}>
+                  <button
+                    key={n} onClick={() => setRating(n)}
+                    className={`text-2xl transition-all hover:scale-110 ${n <= rating ? "text-red-600" : "text-neutral-800"}`}
+                  >
                     ★
                   </button>
                 ))}
               </div>
-              <textarea value={comment} onChange={e => setComment(e.target.value)} rows={3} minLength={10}
+              <textarea
+                value={comment} onChange={e => setComment(e.target.value)} rows={3} minLength={10}
                 placeholder="Share your experience..."
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" />
-              <button onClick={submitReview} disabled={loading || comment.length < 10}
-                className="w-full bg-amber-500 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-amber-600 disabled:opacity-50 transition-colors">
+                className="w-full bg-[#080808] border border-neutral-800 text-neutral-400 text-xs px-4 py-3 focus:outline-none focus:border-red-600 transition-colors duration-200 resize-none placeholder-neutral-800"
+              />
+              <button
+                onClick={submitReview} disabled={loading || comment.length < 10}
+                className={`${btnPrimary} bg-red-600 text-white hover:bg-red-500`}
+              >
                 Submit Review
               </button>
             </div>
@@ -129,13 +152,15 @@ export default function OrderActions({ orderId, status, isClient, isFreelancer, 
       )}
 
       {status === "COMPLETED" && hasReview && (
-        <p className="text-sm text-green-600 flex items-center gap-1.5">
-          <CheckCircle className="w-4 h-4" /> Review submitted
+        <p className="text-xs text-neutral-600 flex items-center gap-2 tracking-widest uppercase">
+          <CheckCircle className="w-3.5 h-3.5 text-red-600" /> Review submitted
         </p>
       )}
 
       {["CANCELLED", "REFUNDED", "DISPUTED"].includes(status) && (
-        <p className="text-sm text-gray-500 text-center">This order is {status.toLowerCase()}.</p>
+        <p className="text-xs text-neutral-700 text-center tracking-widest uppercase">
+          Order is {status.toLowerCase()}
+        </p>
       )}
     </div>
   );

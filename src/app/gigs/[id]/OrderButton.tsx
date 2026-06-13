@@ -15,8 +15,10 @@ export default function OrderButton({ gig }: { gig: Gig }) {
 
   if (!user) {
     return (
-      <button onClick={() => router.push("/auth/login")}
-        className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
+      <button
+        onClick={() => router.push("/auth/login")}
+        className="w-full bg-red-600 text-white py-3.5 text-xs font-semibold tracking-widest uppercase hover:bg-red-500 transition-colors duration-200"
+      >
         Sign in to Order
       </button>
     );
@@ -24,7 +26,7 @@ export default function OrderButton({ gig }: { gig: Gig }) {
 
   if (user.role === "FREELANCER" || user.id === gig.freelancerId) {
     return (
-      <div className="text-center text-sm text-gray-400 py-3">
+      <div className="text-center text-xs text-neutral-700 py-3 tracking-widest uppercase">
         {user.id === gig.freelancerId ? "This is your gig" : "Freelancers cannot place orders"}
       </div>
     );
@@ -47,8 +49,10 @@ export default function OrderButton({ gig }: { gig: Gig }) {
 
   if (!showForm) {
     return (
-      <button onClick={() => setShowForm(true)}
-        className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
+      <button
+        onClick={() => setShowForm(true)}
+        className="w-full bg-red-600 text-white py-3.5 text-xs font-semibold tracking-widest uppercase hover:bg-red-500 transition-colors duration-200"
+      >
         Order Now — ${(gig.price / 100).toFixed(0)}
       </button>
     );
@@ -56,21 +60,33 @@ export default function OrderButton({ gig }: { gig: Gig }) {
 
   return (
     <div className="space-y-4">
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="text-[10px] text-red-500 border border-red-900 bg-red-950/30 px-3 py-2 tracking-wide">{error}</p>
+      )}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">Describe your requirements</label>
+        <label className="block text-[10px] text-neutral-600 uppercase tracking-[0.3em] mb-2">
+          Describe your requirements
+        </label>
         <textarea
-          value={requirements} onChange={e => setRequirements(e.target.value)}
-          rows={4} minLength={20}
+          value={requirements}
+          onChange={e => setRequirements(e.target.value)}
+          rows={4}
+          minLength={20}
           placeholder="Explain what you need in detail..."
-          className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+          className="w-full bg-[#080808] border border-neutral-800 text-neutral-300 text-xs px-4 py-3 focus:outline-none focus:border-red-600 transition-colors duration-200 resize-none placeholder-neutral-800"
         />
       </div>
-      <button onClick={handleOrder} disabled={loading}
-        className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors">
-        {loading ? "Placing order..." : `Confirm Order — $${(gig.price / 100).toFixed(0)}`}
+      <button
+        onClick={handleOrder}
+        disabled={loading}
+        className="w-full bg-red-600 text-white py-3.5 text-xs font-semibold tracking-widest uppercase hover:bg-red-500 disabled:opacity-40 transition-colors duration-200"
+      >
+        {loading ? "Placing order..." : `Confirm — $${(gig.price / 100).toFixed(0)}`}
       </button>
-      <button onClick={() => setShowForm(false)} className="w-full text-sm text-gray-400 hover:text-gray-600">
+      <button
+        onClick={() => setShowForm(false)}
+        className="w-full text-[10px] text-neutral-700 hover:text-neutral-500 tracking-widest uppercase transition-colors"
+      >
         Cancel
       </button>
     </div>

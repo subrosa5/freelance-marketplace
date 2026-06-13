@@ -50,18 +50,28 @@ export default function OrderChat({ orderId, currentUserId }: { orderId: string;
 
   return (
     <div className="flex flex-col h-[500px]">
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4">
         {messages.length === 0 && (
-          <p className="text-center text-sm text-gray-400 py-8">No messages yet. Start the conversation!</p>
+          <div className="flex items-center justify-center h-full">
+            <p className="text-xs text-neutral-800 tracking-widest uppercase">No messages yet</p>
+          </div>
         )}
         {messages.map((msg) => {
           const isOwn = msg.senderId === currentUserId;
           return (
             <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${isOwn ? "bg-indigo-600 text-white rounded-br-sm" : "bg-gray-100 text-gray-900 rounded-bl-sm"}`}>
-                {!isOwn && <p className="text-xs font-medium mb-1 text-gray-500">{msg.sender.name}</p>}
-                <p className="leading-relaxed">{msg.content}</p>
-                <p className={`text-xs mt-1 ${isOwn ? "text-indigo-200" : "text-gray-400"}`}>
+              <div className={`max-w-[78%] px-4 py-3 text-xs leading-relaxed ${
+                isOwn
+                  ? "bg-red-600 text-white"
+                  : "bg-neutral-900 text-neutral-300 border-l-2 border-neutral-800"
+              }`}>
+                {!isOwn && (
+                  <p className="text-[10px] font-semibold mb-1.5 text-neutral-600 tracking-widest uppercase">
+                    {msg.sender.name}
+                  </p>
+                )}
+                <p>{msg.content}</p>
+                <p className={`text-[10px] mt-1.5 ${isOwn ? "text-red-300" : "text-neutral-700"}`}>
                   {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>
@@ -71,15 +81,18 @@ export default function OrderChat({ orderId, currentUserId }: { orderId: string;
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={sendMessage} className="p-3 border-t border-gray-100 flex gap-2">
+      <form onSubmit={sendMessage} className="p-3 border-t border-neutral-900 flex gap-2">
         <input
-          value={content} onChange={e => setContent(e.target.value)}
+          value={content}
+          onChange={e => setContent(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-1 bg-[#080808] border border-neutral-800 text-neutral-300 text-xs px-4 py-2.5 focus:outline-none focus:border-red-600 transition-colors duration-200 placeholder-neutral-800"
         />
-        <button type="submit" disabled={sending || !content.trim()}
-          className="bg-indigo-600 text-white w-9 h-9 rounded-xl flex items-center justify-center hover:bg-indigo-700 disabled:opacity-50 transition-colors shrink-0">
-          <Send className="w-4 h-4" />
+        <button
+          type="submit" disabled={sending || !content.trim()}
+          className="bg-red-600 text-white w-9 h-9 flex items-center justify-center hover:bg-red-500 disabled:opacity-40 transition-colors duration-200 shrink-0"
+        >
+          <Send className="w-3.5 h-3.5" />
         </button>
       </form>
     </div>
