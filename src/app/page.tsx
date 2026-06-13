@@ -4,11 +4,15 @@ import Navbar from "@/components/layout/Navbar";
 import { Search, Shield, Zap, Star } from "lucide-react";
 
 async function getStats() {
-  const [gigCount, userCount] = await Promise.all([
-    prisma.gig.count({ where: { isPublished: true } }),
-    prisma.user.count(),
-  ]);
-  return { gigCount, userCount };
+  try {
+    const [gigCount, userCount] = await Promise.all([
+      prisma.gig.count({ where: { isPublished: true } }),
+      prisma.user.count(),
+    ]);
+    return { gigCount, userCount };
+  } catch {
+    return { gigCount: 0, userCount: 0 };
+  }
 }
 
 export default async function Home() {
