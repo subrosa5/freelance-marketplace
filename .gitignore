@@ -43,3 +43,7 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# AI agent instruction files (local-only, not for public repo)
+CLAUDE.md
+AGENTS.md
